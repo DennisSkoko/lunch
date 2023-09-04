@@ -1,34 +1,26 @@
+export const name = 'Ubåtshallen'
+export const url = 'https://www.ubatshallen.se'
+
 /**
- * @param {import('puppeteer').Page} page
+ * @param {import('cheerio').CheerioAPI} $
  */
-export async function scrape(page) {
-  await page.goto('https://www.ubatshallen.se')
-
-  const courses = await page.evaluate(() => {
-    const day = new Date().getDay()
-
-    /** @type {{ [key: string]: string }} */
-  	const dayIndexToText = {
-      '1': 'Måndag',
-      '2': 'Tisdag',
-      '3': 'Onsdag',
-      '4': 'Torsdag',
-      '5': 'Fredag'
-    }
-
-    const dayAsText = dayIndexToText[day]
-
-    const blockGroup = [...document.body.querySelectorAll(`
-      .entry-content .wp-block-group
-    `)].find(el => el.innerText.includes(dayAsText))
-    
-    const paragraphs = [...blockGroup.querySelectorAll('p')].filter(el => el.innerText !== '')
-    
-    return [paragraphs[1].innerText, paragraphs[2].innerText]
-  })
-
-  return {
-    restaurant: 'Ubåtshallen',
-    courses
+export function scrape($) {
+  /** @type {{ [key: string]: string }} */
+  const dayIndexToText = {
+    '1': 'Måndag',
+    '2': 'Tisdag',
+    '3': 'Onsdag',
+    '4': 'Torsdag',
+    '5': 'Fredag'
   }
+
+  const dayAsText = dayIndexToText[new Date().getDay() + 4]
+
+  return $(`.entry-content .wp-block-group strong:contains(${dayAsText})`)
+    .closest('.wp-block-group')
+    .find('p')
+    .map((_i, el) => $(el).text())
+    .get()
+    .filter(text => text !== '')
+    .slice(1, 3)
 }

@@ -1,8 +1,8 @@
-FROM ghcr.io/puppeteer/puppeteer:21.1.1 
+FROM node:18.17
 
 ENV NODE_ENV=production
 
-WORKDIR /home/pptruser/app
+WORKDIR /app
 
 COPY package*.json ./
 

@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: api
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels: &labels
+      app.kubernetes.io/name: api
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: api
+          image: registry.home.dennisskoko.com/lunch/api
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ['ALL']
+            runAsNonRoot: true
+            runAsUser: 997
+            runAsGroup: 997
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: LUNCH_STORAGE_FILE
+              value: /etc/lunch/restaurants.json
+          volumeMounts:
+            - name: storage
+              mountPath: /etc/lunch
+      volumes:
+        - name: storage
+          nfs:
+            server: storage.lan
+            path: /mnt/main/services/lunch

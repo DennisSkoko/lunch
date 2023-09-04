@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cleaner
+
+spec:
+  schedule: '30 14 1-5 * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: cleaner
+              image: registry.home.dennisskoko.com/lunch/api:latest
+              command: ['npm', 'run', 'clean']
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ['ALL']
+                runAsNonRoot: true
+                runAsUser: 997
+                runAsGroup: 997
+                seccompProfile:
+                  type: RuntimeDefault
+              env:
+                - name: LUNCH_STORAGE_FILE
+                  value: /etc/lunch/restaurants.json
+              volumeMounts:
+                - name: storage
+                  mountPath: /etc/lunch
+          volumes:
+            - name: storage
+              nfs:
+                server: storage.lan
+                path: /mnt/main/services/lunch

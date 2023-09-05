@@ -15,7 +15,7 @@ for (const restaurant of restaurants) {
 
   const $ = load(await response.text())
   const courses = restaurant.scrape($)
-  scrapedCourses.push({ name: restaurant.name, courses })
+  scrapedCourses.push({ name: restaurant.name, url: restaurant.url, courses })
 }
 
 await storage.write(scrapedCourses)

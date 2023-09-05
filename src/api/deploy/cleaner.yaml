@@ -4,7 +4,7 @@ metadata:
   name: cleaner
 
 spec:
-  schedule: '30 14 1-5 * *'
+  schedule: '30 12 1-5 * *'
   jobTemplate:
     spec:
       template:

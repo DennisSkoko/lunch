@@ -14,7 +14,7 @@ export function scrape($) {
     '5': 'Fredag'
   }
 
-  const dayAsText = dayIndexToText[new Date().getDay() + 4]
+  const dayAsText = dayIndexToText[new Date().getDay()]
 
   return $(`.entry-content .wp-block-group strong:contains(${dayAsText})`)
     .closest('.wp-block-group')

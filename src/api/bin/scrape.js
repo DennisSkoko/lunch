@@ -3,20 +3,21 @@ import { load } from 'cheerio'
 import { restaurants } from '../src/restaurants/index.js'
 import * as storage from '../src/storage.js'
 
-const scrapedCourses = []
+const scrapedCourses = await Promise.all(
+  restaurants.map(async restaurant => {
+    const response = await fetch(restaurant.url)
 
-for (const restaurant of restaurants) {
-  const response = await fetch(restaurant.url)
+    if (!response.ok) {
+      console.error('Failed to fetch HTML page', { url: restaurant.url })
+      return null
+    }
 
-  if (!response.ok) {
-    console.log('Failed to fetch HTML page', { url: restaurant.url })
-    continue
-  }
+    const $ = load(await response.text())
+    const courses = restaurant.scrape($)
 
-  const $ = load(await response.text())
-  const courses = restaurant.scrape($)
-  scrapedCourses.push({ name: restaurant.name, url: restaurant.url, courses })
-}
+    return { name: restaurant.name, url: restaurant.url, courses }
+  })
+)
 
-await storage.write(scrapedCourses)
+await storage.write(scrapedCourses.filter(courses => courses !== null))
 

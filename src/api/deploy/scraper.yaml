@@ -4,7 +4,7 @@ metadata:
   name: scraper
 
 spec:
-  schedule: 0 7 * * 1-5
+  schedule: 0 8 * * 1-5
   jobTemplate:
     spec:
       template:

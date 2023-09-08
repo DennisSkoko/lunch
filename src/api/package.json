@@ -2,7 +2,7 @@
   "name": "lunch-api",
   "type": "module",
   "scripts": {
-    "start": "supervisor -n error -w src -- -r dotenv/config src/index.js",
+    "start": "supervisor -n error -w src -- -r dotenv/config src/main.js",
     "scrape": "node -r dotenv/config bin/scrape.js",
     "clean": "node -r dotenv/config bin/clean.js",
     "lint": "tsc"

@@ -9,15 +9,28 @@ const scrapedCourses = await Promise.all(
 
     if (!response.ok) {
       console.error('Failed to fetch HTML page', { url: restaurant.url })
-      return null
+
+      return {
+        name: restaurant.name,
+        url: restaurant.url,
+        error: `Failed to make request to restaurant, got status '${response.statusText}'`
+      }
     }
 
-    const $ = load(await response.text())
-    const courses = restaurant.scrape($)
+    try {
+      const $ = load(await response.text())
+      const courses = restaurant.scrape($)
 
-    return { name: restaurant.name, url: restaurant.url, courses }
+      return { name: restaurant.name, url: restaurant.url, courses }
+    } catch (error) {
+      return {
+        name: restaurant.name,
+        url: restaurant.url,
+        error: /** @type {Error} */ (error).message
+      }
+    }
   })
 )
 
-await storage.write(scrapedCourses.filter(courses => courses !== null))
+await storage.write(scrapedCourses)
 

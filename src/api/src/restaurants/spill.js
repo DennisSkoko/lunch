@@ -11,5 +11,5 @@ export function scrape($) {
     .map((_i, el) => $(el).text())
     .get()
     .slice(1)
-    .map(course => course.replace('Välkommen', '').trim())
+    .map(course => course.replace(/\n\n.*/, '').trim())
 }

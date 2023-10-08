@@ -3,3 +3,4 @@ namespace: lunch
 resources:
   - namespace.yaml
   - ../src/api/deploy
+  - ../src/notifier/deploy

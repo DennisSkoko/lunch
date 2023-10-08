@@ -1,0 +1,7 @@
+secretGenerator:
+  - name: secrets 
+    envs:
+      - .env
+
+resources:
+  - notifier.yaml

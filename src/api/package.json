@@ -1,5 +1,6 @@
 {
   "name": "lunch-api",
+  "private": true,
   "type": "module",
   "scripts": {
     "start": "supervisor -n error -w src -- -r dotenv/config src/main.js",

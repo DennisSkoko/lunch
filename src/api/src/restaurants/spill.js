@@ -10,5 +10,5 @@ export function scrape($) {
     .find('div:nth-child(3) #client .space-y-4 div')
     .map((_i, el) => $(el).text())
     .get()
-    .map(course => course.replace(/\n\n.*/, '').trim())
+    .map(course => course.replace(/[\n]+.*/, '').trim())
 }

@@ -18,8 +18,8 @@ export function scrape($) {
 
   return $(`#dagens h5:contains('${dayAsText}')`)
     .closest('.et_pb_module')
-    .find('table td span')
-    .map((_i, el) => $(el).text())
+    .find('table td p')
+    .map((_i, el) => $(el).text().trim())
     .get()
     .filter(text => text.trim() !== '' && !/\d+ kr/.test(text))
 }

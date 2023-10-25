@@ -20,6 +20,7 @@ export class Slack {
     const textParts = ['Today\'s menu is:']
 
     restaurants.forEach(restaurant => {
+      if (restaurant.error) return;
       if (restaurant.courses.length === 0) return
 
       textParts.push(`  •   <${restaurant.url}|${restaurant.name}>`)

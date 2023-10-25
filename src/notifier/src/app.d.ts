@@ -9,5 +9,6 @@ module NodeJS {
 interface Restaurant {
   name: string
   url: string
+  error?: string
   courses: string[]
 }

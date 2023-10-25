@@ -1,4 +1,4 @@
-export const name = 'Stora Varvsgatan 9'
+export const name = 'Stora Varvsgatan 6'
 export const url = 'https://storavarvsgatan6.se/meny.html'
 
 /**

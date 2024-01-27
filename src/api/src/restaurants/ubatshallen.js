@@ -3,6 +3,7 @@ export const url = 'https://www.ubatshallen.se'
 
 /**
  * @param {import('cheerio').CheerioAPI} $
+ * @returns {Course[]}
  */
 export function scrape($) {
   /** @type {{ [key: string]: string }} */
@@ -16,11 +17,19 @@ export function scrape($) {
 
   const dayAsText = dayIndexToText[new Date().getDay()]
 
-  return $(`.entry-content .wp-block-group strong:contains(${dayAsText})`)
+  const section = $(`.entry-content .wp-block-group strong:contains(${dayAsText})`)
     .closest('.wp-block-group')
-    .find('p')
-    .map((_i, el) => $(el).text())
-    .get()
-    .filter(text => text !== '')
-    .slice(1, 3)
+    .find('p:last-child')
+    .first()
+    
+  section.find('br').replaceWith('\n')
+
+  return section
+    .text()
+    .split('\n')
+    .filter(desc => desc.trim() !== '')
+    .map((desc, i) => ({
+      diet: i === 0 ? 'veg' : 'all',
+      desc: /** @type {string} */ (desc.split(': ').pop()),
+    }))
 }

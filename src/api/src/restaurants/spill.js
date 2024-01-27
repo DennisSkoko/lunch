@@ -3,6 +3,7 @@ export const url = 'https://restaurangspill.se/'
 
 /**
  * @param {import('cheerio').CheerioAPI} $
+ * @returns {Course[]}
  */
 export function scrape($) {
   return $('#dagens h2:contains(Gängtappen)')
@@ -11,4 +12,5 @@ export function scrape($) {
     .map((_i, el) => $(el).text())
     .get()
     .map(course => course.replace(/[\n]+.*/, '').trim())
+    .map((desc, i) => ({ diet: i === 1 ? 'veg' : 'all', desc }))
 }

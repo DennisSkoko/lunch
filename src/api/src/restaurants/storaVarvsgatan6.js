@@ -3,6 +3,7 @@ export const url = 'https://storavarvsgatan6.se/meny.html'
 
 /**
  * @param {import('cheerio').CheerioAPI} $
+ * @returns {Course[]}
  */
 export function scrape($) {
   /** @type {{ [key: string]: string }} */
@@ -17,8 +18,16 @@ export function scrape($) {
   const dayAsText = dayIndexToText[new Date().getDay()]
   let currentNode = $(`p:contains('${dayAsText}')`)
 
-  return Array.from({ length: 2 }, () => {
-    currentNode = currentNode.next()
-    return currentNode.text().replace(/.*: /, '')
-  })
+  const result = Array
+    .from({ length: 2 }, (_, i) => {
+      currentNode = currentNode.next()
+
+      return {
+        diet: i === 1 ? 'veg' : 'all',
+        desc: currentNode.text().replace(/.*: /, '')
+      }
+    })
+    .filter(course => course.desc.trim() !== '')
+
+  return /** @type {Course[]} **/ (result)
 }

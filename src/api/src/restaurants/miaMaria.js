@@ -3,6 +3,7 @@ export const url = 'http://www.miamarias.nu'
 
 /**
  * @param {import('cheerio').CheerioAPI} $
+ * @returns {Course[]}
  */
 export function scrape($) {
   /** @type {{ [key: string]: string }} */
@@ -22,4 +23,5 @@ export function scrape($) {
     .map((_i, el) => $(el).text().trim())
     .get()
     .filter(text => text.trim() !== '' && !/\d+ kr/.test(text))
+    .map((desc, i) => ({ diet: i === 2 ? 'veg' : 'all', desc }))
 }

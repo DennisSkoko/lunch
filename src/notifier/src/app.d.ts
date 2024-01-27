@@ -6,9 +6,14 @@ module NodeJS {
   }
 }
 
+interface Course {
+  diet: 'all' | 'veg'
+  desc: string
+}
+
 interface Restaurant {
   name: string
   url: string
   error?: string
-  courses: string[]
+  courses: Course[]
 }

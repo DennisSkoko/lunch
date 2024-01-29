@@ -24,10 +24,11 @@ export async function scrape() {
   const result = Array
     .from({ length: 2 }, (_, i) => {
       currentNode = currentNode.next()
+      const [_first, ...rest] = currentNode.text().split(':')
 
       return {
         diet: i === 1 ? 'veg' : 'all',
-        desc: currentNode.text().replace(/.*: /, '')
+        desc: rest.map(part => part.trim()).join('')
       }
     })
     .filter(course => course.desc.trim() !== '')

@@ -1,11 +1,14 @@
+import { loadCherrioFromUrl } from '../util.js'
+
 export const name = 'Spill'
 export const url = 'https://restaurangspill.se/'
 
 /**
- * @param {import('cheerio').CheerioAPI} $
- * @returns {Course[]}
+ * @returns {Promise<Course[]>}
  */
-export function scrape($) {
+export async function scrape() {
+  const $ = await loadCherrioFromUrl(url)
+
   return $('#dagens h2:contains(Gängtappen)')
     .closest('.flex-1')
     .find('div:nth-child(3) #client .space-y-4 div')

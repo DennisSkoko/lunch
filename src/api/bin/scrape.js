@@ -1,5 +1,4 @@
 import fetch from 'node-fetch'
-import { load } from 'cheerio'
 import { restaurants } from '../src/restaurants/index.js'
 import * as storage from '../src/storage.js'
 
@@ -18,8 +17,7 @@ const scrapedCourses = await Promise.all(
     }
 
     try {
-      const $ = load(await response.text())
-      const courses = restaurant.scrape($)
+      const courses = await restaurant.scrape()
 
       return { name: restaurant.name, url: restaurant.url, courses }
     } catch (error) {

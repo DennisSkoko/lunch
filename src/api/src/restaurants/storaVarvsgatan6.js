@@ -1,11 +1,14 @@
+import { loadCherrioFromUrl } from '../util.js'
+
 export const name = 'Stora Varvsgatan 6'
 export const url = 'https://storavarvsgatan6.se/meny.html'
 
 /**
- * @param {import('cheerio').CheerioAPI} $
- * @returns {Course[]}
+ * @returns {Promise<Course[]>}
  */
-export function scrape($) {
+export async function scrape() {
+  const $ = await loadCherrioFromUrl(url)
+
   /** @type {{ [key: string]: string }} */
   const dayIndexToText = {
     '1': 'Måndag',

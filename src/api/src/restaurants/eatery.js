@@ -32,5 +32,7 @@ export async function scrape() {
   const courses = $(`h2 b:contains(${dayAsText})`).parent().next().text().split('\n')
   const sallad = $(`h2 strong:contains("Veckans sallad: ")`).parent().next().text()
 
-  return [...courses, sallad].map((desc, i) => ({ diet: i === 0 ? 'veg' : 'all', desc }))
+  return [...courses, sallad]
+    .map(course => course.replace('Sweet Tuesday:', '').replace('Pancake Thursday:', '').trim())
+    .map((desc, i) => ({ diet: i === 0 ? 'veg' : 'all', desc }))
 }

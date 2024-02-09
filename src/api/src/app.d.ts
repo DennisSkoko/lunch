@@ -1,5 +1,6 @@
 module NodeJS {
   interface ProcessEnv {
+    readonly NODE_ENV: 'production'|undefined
     readonly LUNCH_STORAGE_FILE: string
   }
 }

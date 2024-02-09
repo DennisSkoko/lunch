@@ -16,5 +16,6 @@ export async function read() {
  * @param {unknown} data
  */ 
 export async function write(data) {
-  await writeFile(process.env.LUNCH_STORAGE_FILE, JSON.stringify(data), 'utf8')
+  const space = process.env.NODE_ENV === 'production' ? 0 : 2
+  await writeFile(process.env.LUNCH_STORAGE_FILE, JSON.stringify(data, null, space), 'utf8')
 }

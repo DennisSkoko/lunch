@@ -18,13 +18,16 @@ export async function scrape() {
     '5': 'Fredag'
   }
 
-  const dayAsText = dayIndexToText[new Date().getDay()]
+  const dayAsText = dayIndexToText[5]
 
-  const section = $(`.entry-content .wp-block-group strong:contains(${dayAsText})`)
+  let section = $(`.entry-content .wp-block-group strong:contains(${dayAsText})`)
     .closest('.wp-block-group')
-    .find('p:last-child')
-    .first()
-    
+    .find('p:nth-child(n + 2):nth-child(-n + 3)')
+  
+  if (dayAsText === 'Fredag') {
+    section = section.slice(0, 1)
+  }
+
   section.find('br').replaceWith('\n')
 
   return section

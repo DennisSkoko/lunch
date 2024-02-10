@@ -1,6 +1,8 @@
 module NodeJS {
   interface ProcessEnv {
     readonly NODE_ENV: 'production'|undefined
+    readonly NTFY_URL: string|undefined
+    readonly NTFY_TOKEN: string|undefined
     readonly LUNCH_STORAGE_FILE: string
   }
 }

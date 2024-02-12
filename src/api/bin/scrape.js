@@ -34,7 +34,7 @@ const failedRestaurants = scrapedRestaurants.filter(
   restaurant => restaurant.error || restaurant.courses?.length === 0
 )
 
-if (process.env.NTFY_URL && failedRestaurants) {
+if (process.env.NTFY_URL && failedRestaurants.length > 0) {
   console.log('Some restaurants failed to scrape, will send notification')
 
   let message = ''

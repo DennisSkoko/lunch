@@ -18,7 +18,7 @@ export async function scrape() {
     '5': 'Fredag'
   }
 
-  const dayAsText = dayIndexToText[5]
+  const dayAsText = dayIndexToText[new Date().getDay()]
 
   let section = $(`.entry-content .wp-block-group strong:contains(${dayAsText})`)
     .closest('.wp-block-group')

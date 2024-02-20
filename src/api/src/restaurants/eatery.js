@@ -30,7 +30,7 @@ export async function scrape() {
   const $ = load(data.menues[menuId].content.content)
 
   const courses = $(`h2 b:contains(${dayAsText})`).parent().next().text().split('\n')
-  const sallad = $(`h2 strong:contains("Veckans sallad: ")`).parent().next().text()
+  const sallad = $(`h3:contains("Veckans sallad")`).next().text()
 
   return [...courses, sallad]
     .map(course => course.replace('Sweet Tuesday:', '').replace('Pancake Thursday:', '').trim())

@@ -1,7 +1,7 @@
 import { loadCherrioFromUrl } from '../util.js'
 
 export const name = 'Mia Maria'
-export const url = 'http://www.miamarias.nu'
+export const url = 'https://www.miamarias.nu'
 
 /**
  * @returns {Promise<Course[]>}

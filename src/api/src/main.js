@@ -16,6 +16,10 @@ app.get('/restaurants', async (_req, res, next) => {
   }
 })
 
-app.listen(5000, () => {
+const server = app.listen(5000, () => {
   console.log('Server started')
+})
+
+process.on('SIGTERM', () => {
+  server.close()
 })

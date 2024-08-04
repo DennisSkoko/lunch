@@ -28,11 +28,19 @@ export async function scrape() {
   const data = /** @type {any} */ (await response.json())
   const menuId = data.eateries['/vastra-hamnen'].menues.lunchmeny
   const $ = load(data.menues[menuId].content.content)
+  const cursor = $(`h2 b:contains(${dayAsText})`).parent()
 
-  const courses = $(`h2 b:contains(${dayAsText})`).parent().next().text().split('\n')
-  const sallad = $(`h3:contains("Veckans sallad")`).next().text()
+  const courses = [
+    cursor.next().text(),
+    cursor.next().next().text(),
+    cursor.next().next().next().text(),
+    $(`p:contains("Veckans sallad")`).text().replace('Veckans sallad:', '').trim()
+  ]
 
-  return [...courses, sallad]
-    .map(course => course.replace('Sweet Tuesday:', '').replace('Pancake Thursday:', '').trim())
-    .map((desc, i) => ({ diet: i === 0 ? 'veg' : 'all', desc }))
+  if (dayAsText === 'TISDAG' || dayAsText === 'TORSDAG') {
+    const extraCourse = cursor.next().next().next().next().text()
+    courses.push(extraCourse.replace('Sweet Tuesday:', '').replace('Pancake Thursday:', '').trim())
+  }
+
+  return courses.map((desc, i) => ({ diet: (i === 0 || i === 3) ? 'veg' : 'all', desc }))
 }

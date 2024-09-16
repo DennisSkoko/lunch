@@ -18,12 +18,15 @@ export async function scrape() {
     '5': 'FREDAG'
   }
 
-  const dayAsText = /** @type {string} */ (dayIndexToText[new Date().getDay()])
+  const dayAsNumber = new Date().getDay()
+  const dayAsText = /** @type {string} */ (dayIndexToText[dayAsNumber])
+
+  const vegs = $('[title="Page 1"] p:last-child').text().replace('VEGETARISKT Mån-Ons:', '').split('Tors-fre:')
 
   /** @type {Course} */
   const weeklyVeg = {
     diet: 'veg',
-    desc: $('[title="Page 1"] p:last-child').text().replace('VECKANS VEGETARISKA', '').trim()
+    desc: /** @type {string} */ (dayAsNumber <= 3 ? vegs[0] : vegs[1]).trim()
   }
 
   if (dayAsText === 'MÅNDAG') {
@@ -43,6 +46,7 @@ export async function scrape() {
         .closest('p')
         .text()
         .replace(dayAsText, '')
+        .trim()
     },
     weeklyVeg
   ]

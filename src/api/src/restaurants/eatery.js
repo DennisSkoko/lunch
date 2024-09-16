@@ -28,7 +28,7 @@ export async function scrape() {
   const data = /** @type {any} */ (await response.json())
   const menuId = data.eateries['/vastra-hamnen'].menues.lunchmeny
   const $ = load(data.menues[menuId].content.content)
-  const cursor = $(`h2 b:contains(${dayAsText})`).parent()
+  const cursor = $(`h2 *:contains(${dayAsText})`).parent()
 
   const courses = [
     cursor.next().text(),
@@ -42,5 +42,5 @@ export async function scrape() {
     courses.push(extraCourse.replace('Sweet Tuesday:', '').replace('Pancake Thursday:', '').trim())
   }
 
-  return courses.map((desc, i) => ({ diet: (i === 0 || i === 3) ? 'veg' : 'all', desc }))
+  return courses.map((desc, i) => ({ diet: i === 0 ? 'veg' : 'all', desc }))
 }

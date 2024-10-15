@@ -11,7 +11,7 @@ export async function scrape() {
 
   /** @type {{ [key: string]: string }} */
   const dayIndexToText = {
-    '1': 'MÅNDAG',
+    '1': 'MÅNDAG', // Non-standard Å character
     '2': 'TISDAG',
     '3': 'ONSDAG',
     '4': 'TORSDAG',
@@ -27,16 +27,6 @@ export async function scrape() {
   const weeklyVeg = {
     diet: 'veg',
     desc: /** @type {string} */ (dayAsNumber <= 3 ? vegs[0] : vegs[1]).trim()
-  }
-
-  if (dayAsText === 'MÅNDAG') {
-    return [
-      {
-        diet: 'all',
-        desc: $(`[title="Page 1"] p:nth-child(2)`).text()
-      },
-      weeklyVeg
-    ]
   }
 
   return [

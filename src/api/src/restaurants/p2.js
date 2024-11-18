@@ -20,8 +20,8 @@ export async function scrape() {
 
   const dayAsText = dayIndexToText[new Date().getDay()]
 
-  return $(`#${dayAsText} .course_description > p`)
-    .map((_i, el) => $(el).text())
+  return $(`.${dayAsText} .lunch_desc`)
+    .map((_i, el) => $(el).text().trim())
     .get()
     .map((desc, i) => ({ diet: i === 0 ? 'veg' : 'all', desc }))
 }

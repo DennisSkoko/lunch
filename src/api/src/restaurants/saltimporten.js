@@ -21,7 +21,7 @@ export async function scrape() {
   const dayAsNumber = new Date().getDay()
   const dayAsText = /** @type {string} */ (dayIndexToText[dayAsNumber])
 
-  const vegs = $('[title="Page 1"] p:last-child').text().replace('VEGETARISKT Mån-Ons:', '').split('Tors-fre:')
+  const vegs = $('[title="Page 1"] p:last-child').text().replace('VEGETARISKT Mån-Ons:', '').split('Tors-Fre:')
 
   /** @type {Course} */
   const weeklyVeg = {

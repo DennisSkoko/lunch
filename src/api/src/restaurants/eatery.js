@@ -34,7 +34,10 @@ export async function scrape() {
     cursor.next().text(),
     cursor.next().next().text(),
     cursor.next().next().next().text(),
-    $(`p:contains("Veckans sallad")`).text().replace('Veckans sallad:', '').trim()
+    (
+      $(`p:contains("Veckans sallad")`).text().replace('Veckans sallad:', '').trim() ||
+      $(`p:contains("VECKANS SALLAD")`).next().text().trim()
+    )
   ]
 
   if (dayAsText === 'TISDAG' || dayAsText === 'TORSDAG') {

@@ -1,4 +1,4 @@
-import { load } from 'cheerio'
+import { JSDOM } from 'jsdom'
 import fetch from 'node-fetch'
 
 export const name = 'Eatery'
@@ -27,23 +27,44 @@ export async function scrape() {
 
   const data = /** @type {any} */ (await response.json())
   const menuId = data.eateries['/vastra-hamnen'].menues.lunchmeny
-  const $ = load(data.menues[menuId].content.content)
-  const cursor = $(`h2 *:contains(${dayAsText})`).parent()
+  const dom = new JSDOM(data.menues[menuId].content.content)
+  const document = dom.window.document
 
-  const courses = [
-    cursor.next().text(),
-    cursor.next().next().text(),
-    cursor.next().next().next().text(),
-    (
-      $(`p:contains("Veckans sallad")`).text().replace('Veckans sallad:', '').trim() ||
-      $(`p:contains("VECKANS SALLAD")`).next().text().trim()
-    )
-  ]
+  /** @type {Element | null | undefined} */
+  let cursor = Array.from(document.querySelectorAll('h2, strong')).find(header => {
+    console.log(header.textContent)
+    return header.textContent === dayAsText
+  })
 
-  if (dayAsText === 'TISDAG' || dayAsText === 'TORSDAG') {
-    const extraCourse = cursor.next().next().next().next().text()
-    courses.push(extraCourse.replace('Sweet Tuesday:', '').replace('Pancake Thursday:', '').trim())
+  if (!cursor) throw new Error('Did not find header with todays day name')
+
+  if (cursor.parentElement?.lastElementChild === cursor) {
+    cursor = cursor.parentElement.nextElementSibling?.firstElementChild
+  } else {
+    cursor = cursor.nextElementSibling
   }
 
-  return courses.map((desc, i) => ({ diet: i === 0 ? 'veg' : 'all', desc }))
+  const courses = [
+    cursor?.textContent,
+    cursor?.nextElementSibling?.textContent,
+    cursor?.nextElementSibling?.nextElementSibling?.textContent
+  ]
+
+  const weeklySalladCursor = Array.from(document.querySelectorAll('strong'))
+    .find(el => el.textContent?.toLowerCase().includes('veckans sallad'))
+
+  if (weeklySalladCursor) {
+    const weeklySallad = weeklySalladCursor.parentElement?.nextElementSibling?.textContent
+    if (weeklySallad) courses.push(weeklySallad)
+  }
+
+  return courses
+    .map(desc => desc?.trim())
+    .map((desc, i) => {
+      if (!desc) {
+        throw new Error('Scraped invalid course')
+      }
+
+      return { diet: i === 2 ? 'veg' : 'all', desc }
+    })
 }

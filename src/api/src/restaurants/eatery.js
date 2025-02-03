@@ -32,7 +32,6 @@ export async function scrape() {
 
   /** @type {Element | null | undefined} */
   let cursor = Array.from(document.querySelectorAll('h2, strong')).find(header => {
-    console.log(header.textContent)
     return header.textContent === dayAsText
   })
 

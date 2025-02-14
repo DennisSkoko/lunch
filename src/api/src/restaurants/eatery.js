@@ -53,8 +53,16 @@ export async function scrape() {
     .find(el => el.textContent?.toLowerCase().includes('veckans sallad'))
 
   if (weeklySalladCursor) {
-    const weeklySallad = weeklySalladCursor.parentElement?.nextElementSibling?.textContent
+    const weeklySallad = weeklySalladCursor.parentElement?.nextElementSibling?.textContent?.trim()
     if (weeklySallad) courses.push(weeklySallad)
+    else {
+      let inlineWeeklySallad = weeklySalladCursor.parentElement?.textContent
+        ?.replace('Veckans sallad', '')
+        .replace(':', '')
+        .trim()
+
+      if (inlineWeeklySallad) courses.push(inlineWeeklySallad)
+    }
   }
 
   return courses

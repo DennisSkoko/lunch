@@ -1,4 +1,4 @@
-import { loadCherrioFromUrl } from '../util.js'
+import { loadJsdomFromUrl } from '../util.js'
 
 export const name = 'Ubåtshallen'
 export const url = 'https://www.ubatshallen.se'
@@ -7,7 +7,8 @@ export const url = 'https://www.ubatshallen.se'
  * @returns {Promise<Course[]>}
  */
 export async function scrape() {
-  const $ = await loadCherrioFromUrl(url)
+  const dom = await loadJsdomFromUrl(url)
+  const document = dom.window.document
 
   /** @type {{ [key: string]: string }} */
   const dayIndexToText = {
@@ -18,24 +19,36 @@ export async function scrape() {
     '5': 'Fredag'
   }
 
-  const dayAsText = dayIndexToText[new Date().getDay()]
+  const dayAsText = /** @type {string} */ (dayIndexToText[new Date().getDay()])
 
-  let section = $(`.entry-content .wp-block-group strong:contains(${dayAsText})`)
-    .closest('.wp-block-group')
-    .find('p:nth-child(n + 2):nth-child(-n + 3)')
+  const header = Array.from(document.querySelectorAll('.entry-content .wp-block-group strong'))
+    .find(header => header.textContent?.includes(dayAsText))
+  if (!header) throw new Error('Could not find the header element')
+
+  const wrapper = header.closest('.wp-block-group')
+
+  if (!wrapper) throw new Error('Could not find the wrapper element')
+
+  header.remove()
+  wrapper.innerHTML = wrapper.innerHTML.replaceAll('<br>', '\n')
   
-  if (dayAsText === 'Fredag') {
-    section = section.slice(0, 1)
+  const courses = wrapper?.textContent
+    ?.split('\n')
+    .filter(line => line.trim() !== '')
+    .slice(0, 3)
+    .map(line => /** @type {string} */ (line.split(':').pop()?.trim()))
+
+  if (!courses) throw new Error('Failed to get the courses')
+
+  const weeklySalladHeader = Array.from(document.querySelectorAll('.entry-content .wp-block-group strong'))
+    .find(header => header.textContent?.toLowerCase().includes("veckans sallad"))
+  if (!weeklySalladHeader) throw new Error('Could not find the weekly sallad element')
+
+  const weeklySallad = weeklySalladHeader.parentElement?.textContent?.split(':').pop()?.trim()
+
+  if (weeklySallad) {
+    courses?.push(weeklySallad)
   }
 
-  section.find('br').replaceWith('\n')
-
-  return section
-    .text()
-    .split('\n')
-    .filter(desc => desc.trim() !== '')
-    .map((desc, i) => ({
-      diet: i === 0 ? 'veg' : 'all',
-      desc: /** @type {string} */ (desc.split(': ').pop()),
-    }))
+  return courses.map((course, i) => ({ diet: i === 0 ? 'veg' : 'all', desc: course }))
 }

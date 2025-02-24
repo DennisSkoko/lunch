@@ -20,10 +20,7 @@ export async function scrape() {
   const result = await worker.recognize(imageUrl)
   await worker.terminate()
 
-  return result.data.text
-    .split('SOPPBAREN')
-    .flatMap(parts => parts.split('TAKE-AWAY KYL'))
-    .slice(0, 2)
+  return getMenuParts(result.data.text)
     .map(part =>
       part
         .replace('\n', '&SEP&')
@@ -32,4 +29,25 @@ export async function scrape() {
         .map(part => part.replaceAll('\n', ' ').replace(/(\d+)[^\d]*$/, '').trim())
     )
     .map(part => /** @type {Course} */ ({ diet: 'veg', desc: part.join(' ') }))
+}
+
+/**
+ * @param {string} text
+ */
+function getMenuParts(text) {
+  let parts = []
+  const menu = []
+
+  for (const line of text.split('\n')) {
+    parts.push(line)
+
+    if (line.endsWith(':-')) {
+      menu.push(parts.join('\n'))
+      parts = []
+    }
+
+    if (menu.length >= 2) break;
+  }
+
+  return menu
 }

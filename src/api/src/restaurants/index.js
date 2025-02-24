@@ -3,7 +3,6 @@ import * as miaMaria from './miaMaria.js'
 import * as p2 from './p2.js'
 import * as saltimporten from './saltimporten.js'
 import * as spill from './spill.js'
-import * as storaVarvsgatan9 from './storaVarvsgatan6.js'
 import * as ubatshallen from './ubatshallen.js'
 import * as vartKok from './vartKok.js'
 
@@ -13,7 +12,6 @@ export const restaurants = [
   p2,
   saltimporten,
   spill,
-  storaVarvsgatan9,
   ubatshallen,
   vartKok,
 ]

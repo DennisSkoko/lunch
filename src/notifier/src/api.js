@@ -28,7 +28,6 @@ export class Slack {
 
     restaurants.forEach(restaurant => {
       if (restaurant.error) return;
-      if (restaurant.courses.length === 0) return
 
       blocks.push({
         type: 'section',
@@ -38,28 +37,30 @@ export class Slack {
         }
       })
 
-      blocks.push({
-        type: 'rich_text',
-        elements: [
-          {
-            type: 'rich_text_list',
-            style: 'bullet',
-            elements: restaurant.courses.map(course => ({
-              type: 'rich_text_section',
-              elements: [
-                // {
-                //   type: 'emoji',
-                //   name: course.diet === 'all' ? 'cut_of_meat' : 'broccoli'
-                // },
-                {
-                  type: 'text',
-                  text: ` ${course.desc}`
-                }
-              ]
-            }))
-          }
-        ]
-      })
+      if (restaurant.courses.length !== 0) {
+        blocks.push({
+          type: 'rich_text',
+          elements: [
+            {
+              type: 'rich_text_list',
+              style: 'bullet',
+              elements: restaurant.courses.map(course => ({
+                type: 'rich_text_section',
+                elements: [
+                  // {
+                  //   type: 'emoji',
+                  //   name: course.diet === 'all' ? 'cut_of_meat' : 'broccoli'
+                  // },
+                  {
+                    type: 'text',
+                    text: ` ${course.desc}`
+                  }
+                ]
+              }))
+            }
+          ]
+        })
+      }
     })
 
     const textParts = ['Today\'s menu']

@@ -27,7 +27,7 @@ spec:
           env:
             - name: LUNCH_STORAGE_FILE
               value: /etc/lunch/restaurants.json
-            - name: NFTY_URL
+            - name: NTFY_URL
               value: https://notify.dennisskoko.com/lunch
           envFrom:
             - secretRef:

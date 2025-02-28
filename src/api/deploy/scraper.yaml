@@ -27,6 +27,11 @@ spec:
               env:
                 - name: LUNCH_STORAGE_FILE
                   value: /etc/lunch/restaurants.json
+                - name: NTFY_URL
+                  value: https://notify.dennisskoko.com/lunch
+              envFrom:
+                - secretRef:
+                    name: api-secrets
               volumeMounts:
                 - name: storage
                   mountPath: /etc/lunch

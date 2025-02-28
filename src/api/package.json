@@ -16,8 +16,7 @@
     "express": "^4.18.2",
     "helmet": "^7.0.0",
     "jsdom": "^26.0.0",
-    "node-fetch": "^3.3.2",
-    "tesseract.js": "^6.0.0"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",

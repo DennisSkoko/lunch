@@ -1,4 +1,3 @@
-import { createWorker } from 'tesseract.js'
 import { loadJsdomFromUrl } from '../util.js'
 
 export const name = 'Vårt kök (Frankful)'
@@ -11,22 +10,18 @@ export async function scrape() {
   const dom = await loadJsdomFromUrl(url)
   const document = dom.window.document
 
-  const img = document.querySelector('.wixui-image img')
+  const wrapper = document.querySelector('[data-testid="richTextElement"]')
 
-  if (!img) throw new Error('Could not find the image element')
+  if (!wrapper?.textContent) {
+    throw new Error('Failed to find richTextElement from Vårt Kök')
+  }
 
-  const imageUrl = /** @type {string} */ (img.getAttribute('src'))
-  const worker = await createWorker('swe')
-  const result = await worker.recognize(imageUrl)
-  await worker.terminate()
-
-  return getMenuParts(result.data.text)
+  return getMenuParts(wrapper?.textContent)
     .map(part =>
       part
-        .replace('\n', '&SEP&')
-        .split('&SEP&')
-        .filter(part => part.trim() !== '')
-        .map(part => part.replaceAll('\n', ' ').replace(/(\d+)[^\d]*$/, '').trim())
+        .split('\n')
+        .map(part => part.replace(/(\d+)[^\d]*$/, '').trim())
+        .filter(part => part !== '' && part.split('').every(c => c.charCodeAt(0) !== 8203))
     )
     .map(part => /** @type {Course} */ ({ diet: 'veg', desc: part.join(' ') }))
 }

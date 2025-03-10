@@ -10,13 +10,13 @@ export async function scrape() {
   const dom = await loadJsdomFromUrl(url)
   const document = dom.window.document
 
-  const wrapper = document.querySelector('[data-testid="richTextElement"]')
+  const wrapper = document.querySelectorAll('[data-testid="richTextElement"]')[4]
 
   if (!wrapper?.textContent) {
     throw new Error('Failed to find richTextElement from Vårt Kök')
   }
 
-  return getMenuParts(wrapper?.textContent)
+  return getMenuParts(wrapper.textContent)
     .map(part =>
       part
         .split('\n')
@@ -36,7 +36,7 @@ function getMenuParts(text) {
   for (const line of text.split('\n')) {
     parts.push(line)
 
-    if (line.endsWith(':-')) {
+    if (line.includes(':-')) {
       menu.push(parts.join('\n'))
       parts = []
     }

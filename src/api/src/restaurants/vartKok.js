@@ -10,7 +10,7 @@ export async function scrape() {
   const dom = await loadJsdomFromUrl(url)
   const document = dom.window.document
 
-  const wrapper = document.querySelectorAll('[data-testid="richTextElement"]')[4]
+  const wrapper = document.querySelectorAll('[data-testid="richTextElement"]')[5]
 
   if (!wrapper?.textContent) {
     throw new Error('Failed to find richTextElement from Vårt Kök')
@@ -21,7 +21,8 @@ export async function scrape() {
       part
         .split('\n')
         .map(part => part.replace(/(\d+)[^\d]*$/, '').trim())
-        .filter(part => part !== '' && part.split('').every(c => c.charCodeAt(0) !== 8203))
+        .map(part => part.split('').filter(c => c.charCodeAt(0) !== 8203).join('').trim())
+        .filter(part => part !== '')
     )
     .map(part => /** @type {Course} */ ({ diet: 'veg', desc: part.join(' ') }))
 }

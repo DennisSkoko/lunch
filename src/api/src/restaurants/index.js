@@ -1,4 +1,3 @@
-import * as eatery from './eatery.js'
 import * as miaMaria from './miaMaria.js'
 import * as p2 from './p2.js'
 import * as saltimporten from './saltimporten.js'
@@ -8,7 +7,6 @@ import * as vartKok from './vartKok.js'
 import * as varv from './varv.js'
 
 export const restaurants = [
-  eatery,
   miaMaria,
   p2,
   saltimporten,

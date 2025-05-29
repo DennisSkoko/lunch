@@ -1,5 +1,5 @@
 import { load } from 'cheerio'
-import { JSDOM } from 'jsdom'
+import { JSDOM, VirtualConsole } from 'jsdom'
 import fetch from 'node-fetch'
 
 /**
@@ -39,5 +39,8 @@ export async function loadJsdomFromUrl(url) {
     throw new Error(`Non ok response code (${response.status}) from ${url}`)
   }
 
-  return new JSDOM(await response.text())
+  const virtualConsole = new VirtualConsole()
+  virtualConsole.sendTo(console, { omitJSDOMErrors: true })
+
+  return new JSDOM(await response.text(), { virtualConsole })
 }

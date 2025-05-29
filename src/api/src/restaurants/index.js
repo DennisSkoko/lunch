@@ -5,6 +5,7 @@ import * as saltimporten from './saltimporten.js'
 import * as spill from './spill.js'
 import * as ubatshallen from './ubatshallen.js'
 import * as vartKok from './vartKok.js'
+import * as varv from './varv.js'
 
 export const restaurants = [
   eatery,
@@ -14,4 +15,5 @@ export const restaurants = [
   spill,
   ubatshallen,
   vartKok,
+  varv,
 ]

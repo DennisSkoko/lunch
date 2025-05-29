@@ -1,13 +1,14 @@
-import { loadCherrioFromUrl } from '../util.js'
+import { loadJsdomFromUrl } from '../util.js'
 
 export const name = 'Mia Maria'
-export const url = 'https://www.miamarias.nu'
+export const url = 'https://miamarias.nu/lunch/'
 
 /**
  * @returns {Promise<Course[]>}
  */
 export async function scrape() {
-  const $ = await loadCherrioFromUrl(url)
+  const dom = await loadJsdomFromUrl(url)
+  const document = dom.window.document
 
   /** @type {{ [key: string]: string }} */
   const dayIndexToText = {
@@ -20,11 +21,31 @@ export async function scrape() {
 
   const dayAsText = dayIndexToText[new Date().getDay()]
 
-  return $(`#dagens h5:contains('${dayAsText}')`)
-    .closest('.et_pb_module')
-    .find('table td p')
-    .map((_i, el) => $(el).text().trim())
-    .get()
-    .filter(text => text.trim() !== '' && !/\d+ kr/.test(text))
-    .map((desc, i) => ({ diet: i === 2 ? 'veg' : 'all', desc }))
+  const button = [...document.querySelectorAll('button[aria-controls]')]
+    .find(button => button.textContent?.trim() === dayAsText);
+  if (!button) throw new Error('Could not find the menu button')
+
+  const menu = document.getElementById(/** @type {string} */ (button.getAttribute('aria-controls')))
+  if (!menu) throw new Error('Could not find the menu that the button pointed to')
+
+  return extractMenuItems(menu).map((menuItem, i) => /** @type {Course} */ ({
+    diet: i === 2 ? 'veg' : 'all',
+    desc: menuItem
+  }))
+}
+
+/**
+  * @param {HTMLElement} element
+  */
+function extractMenuItems(element) {
+  const menuItems = []
+
+  for (const child of element.children) {
+    const menuItemElement = child.children[2]
+    if (!menuItemElement) throw new Error('Could not find menu item element')
+
+    menuItems.push(menuItemElement?.textContent?.trim())
+  }
+
+  return menuItems
 }

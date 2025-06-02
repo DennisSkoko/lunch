@@ -12,11 +12,11 @@ export async function scrape() {
 
   /** @type {{ [key: string]: string }} */
   const dayIndexToText = {
-    '1': 'Monday',
-    '2': 'Tuesday',
-    '3': 'Wednesday',
-    '4': 'Thursday',
-    '5': 'Friday'
+    '1': 'Måndag',
+    '2': 'Tisdag',
+    '3': 'Onsdag',
+    '4': 'Torsdag',
+    '5': 'Fredag'
   }
 
   const dayAsText = dayIndexToText[new Date().getDay()]
@@ -33,7 +33,7 @@ export async function scrape() {
 
   if (!menuItem) throw new Error('Could not find menu item element')
 
-  return menuItem.innerHTML.split('<br>or<br>')
+  return menuItem.innerHTML.split('<br>eller<br>')
     .map((menuItem, i) => /** @type {Course} */ ({
       diet: i === 1 ? 'veg' : 'all',
       desc: menuItem.trim()

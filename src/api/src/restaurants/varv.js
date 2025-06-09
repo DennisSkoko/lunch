@@ -28,9 +28,7 @@ export async function scrape() {
     .find(element => element.textContent?.trim() === dayAsText)
   if (!header) throw new Error('Could not find the header for today')
 
-  const headerWrapper = header.parentElement?.parentElement?.parentElement?.parentElement
-  const menuItem = headerWrapper?.nextElementSibling?.querySelector('.sqs-html-content > h1')
-
+  const menuItem = header?.nextElementSibling
   if (!menuItem) throw new Error('Could not find menu item element')
 
   return menuItem.innerHTML.split('<br>eller<br>')

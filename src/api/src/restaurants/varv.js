@@ -31,7 +31,7 @@ export async function scrape() {
   const menuItem = header?.nextElementSibling
   if (!menuItem) throw new Error('Could not find menu item element')
 
-  return menuItem.innerHTML.split('<br>eller<br>')
+  return menuItem.innerHTML.split('<br>Eller<br>')
     .map((menuItem, i) => /** @type {Course} */ ({
       diet: i === 1 ? 'veg' : 'all',
       desc: menuItem.trim()

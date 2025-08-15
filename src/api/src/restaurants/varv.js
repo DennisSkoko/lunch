@@ -12,19 +12,16 @@ export async function scrape() {
 
   /** @type {{ [key: string]: string }} */
   const dayIndexToText = {
-    '1': 'Måndag',
-    '2': 'Tisdag',
-    '3': 'Onsdag',
-    '4': 'Torsdag',
-    '5': 'Fredag'
+    '1': 'Monday',
+    '2': 'Tuesday',
+    '3': 'Wednesday',
+    '4': 'Thursday',
+    '5': 'Friday'
   }
 
   const dayAsText = dayIndexToText[new Date().getDay()]
 
-  const grid = document.querySelector('.fluid-engine')
-  if (!grid) throw new Error('Could not find the grid layout element')
-
-  const header =[...grid.querySelectorAll('h4')]
+  const header =[...document.querySelectorAll('h4')]
     .find(element => element.textContent?.trim() === dayAsText)
   if (!header) throw new Error('Could not find the header for today')
 
@@ -34,15 +31,9 @@ export async function scrape() {
   return menuItem.innerHTML.split('<br>')
     .map(line => line.trim())
     .filter(line => line !== "")
+    .slice(0, 2)
     .map((menuItem, i) => /** @type {Course} */ ({
       diet: i === 1 ? 'veg' : 'all',
       desc: menuItem
     }))
-    .map(menuItem => {
-      const temp = document.createElement('div')
-      temp.innerHTML = menuItem.desc
-      menuItem.desc =  /** @type {string} */ (temp.textContent)
-
-      return menuItem
-    })
 }

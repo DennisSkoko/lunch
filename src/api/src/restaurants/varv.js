@@ -25,13 +25,15 @@ export async function scrape() {
     .find(element => element.textContent?.trim() === dayAsText)
   if (!header) throw new Error('Could not find the header for today')
 
-  const menuItem = header?.nextElementSibling
-  if (!menuItem) throw new Error('Could not find menu item element')
+  const firstMenuItem = header?.nextElementSibling
+  if (!firstMenuItem) throw new Error('Could not find the first menu item element')
 
-  return menuItem.innerHTML.split('<br>')
-    .map(line => line.trim())
-    .filter(line => line !== "")
-    .slice(0, 2)
+  const secondMenuItem = header?.nextElementSibling?.nextElementSibling
+  if (!secondMenuItem) throw new Error('Could not find the second menu item element')
+
+  return [firstMenuItem, secondMenuItem]
+    .map(el => el.textContent?.trim())
+    .filter(line => !!line)
     .map((menuItem, i) => /** @type {Course} */ ({
       diet: i === 1 ? 'veg' : 'all',
       desc: menuItem

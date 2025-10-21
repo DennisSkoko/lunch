@@ -1,11 +1,12 @@
 import fetch from 'node-fetch'
 import { restaurants } from '../src/restaurants/index.js'
 import * as storage from '../src/storage.js'
+import { retry } from '../src/util.js'
 
 const scrapedRestaurants = await Promise.all(
   restaurants.map(async restaurant => {
     try {
-      const courses = await restaurant.scrape()
+      const courses = await retry(async () => await restaurant.scrape())
 
       return { name: restaurant.name, url: restaurant.url, courses }
     } catch (error) {

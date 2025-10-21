@@ -44,3 +44,35 @@ export async function loadJsdomFromUrl(url) {
 
   return new JSDOM(await response.text(), { virtualConsole })
 }
+
+/**
+ * @template T
+ * @param {() => Promise<T>} task
+ * @returns {Promise<T>}
+ */
+export async function retry(task) {
+  let retries = 0
+  let latestError = null
+
+  while (retries < 3) {
+    try {
+      return await task()
+    } catch (error) {
+      latestError = error
+      await wait(1000)
+    }
+
+    retries += 1
+  }
+
+  throw latestError
+}
+
+/**
+ * @param {number} ms
+ */
+export async function wait(ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
+}

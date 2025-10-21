@@ -2,7 +2,7 @@
 // import fetch from 'node-fetch'
 
 export const name = 'Eatery'
-export const url = 'https://eatery.se/vastra-hamnen/lunchmeny'
+export const url = 'https://eatery.se/anlaggningar/vastra-hamnen'
 
 /**
  * @returns {Promise<Course[]>}
@@ -75,5 +75,7 @@ export async function scrape() {
   //     return { diet: i === 2 ? 'veg' : 'all', desc }
   //   })
 
-  return []
+  return [
+    { diet: 'all', desc: 'Klicka på länken och kolla själv' }
+  ]
 }

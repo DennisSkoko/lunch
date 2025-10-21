@@ -12,28 +12,41 @@ export async function scrape() {
 
   /** @type {{ [key: string]: string }} */
   const dayIndexToText = {
-    '1': 'Monday',
-    '2': 'Tuesday',
-    '3': 'Wednesday',
-    '4': 'Thursday',
-    '5': 'Friday'
+    '1': 'monday',
+    '2': 'tuesday',
+    '3': 'wednesday',
+    '4': 'thursday',
+    '5': 'friday'
   }
 
   const dayAsText = dayIndexToText[new Date().getDay()]
 
   const header =[...document.querySelectorAll('h4')]
-    .find(element => element.textContent?.trim() === dayAsText)
+    .find(element => element.textContent?.trim().toLowerCase() === dayAsText)
   if (!header) throw new Error('Could not find the header for today')
 
-  const firstMenuItem = header?.nextElementSibling
-  if (!firstMenuItem) throw new Error('Could not find the first menu item element')
+  // const firstMenuItem = header?.nextElementSibling
+  // if (!firstMenuItem) throw new Error('Could not find the first menu item element')
 
-  const secondMenuItem = header?.nextElementSibling?.nextElementSibling
-  if (!secondMenuItem) throw new Error('Could not find the second menu item element')
+  // const secondMenuItem = header?.nextElementSibling?.nextElementSibling
+  // if (!secondMenuItem) throw new Error('Could not find the second menu item element')
 
-  return [firstMenuItem, secondMenuItem]
-    .map(el => el.textContent?.trim())
-    .filter(line => !!line)
+  // return [firstMenuItem, secondMenuItem]
+  //   .map(el => el.textContent?.trim())
+  //   .filter(line => !!line)
+  //   .map((menuItem, i) => /** @type {Course} */ ({
+  //     diet: i === 1 ? 'veg' : 'all',
+  //     desc: menuItem
+  //   }))
+  
+  const menuItem = header?.nextElementSibling
+  if (!menuItem) throw new Error('Could not find the menu item element')
+
+  return menuItem?.innerHTML
+    .replaceAll('<br>', '\n')
+    .replaceAll('<em>or</em>', '\n')
+    .split('\n')
+    .filter(line => line.trim())
     .map((menuItem, i) => /** @type {Course} */ ({
       diet: i === 1 ? 'veg' : 'all',
       desc: menuItem

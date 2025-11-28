@@ -2,6 +2,7 @@ import { loadJsdomFromUrl } from '../util.js'
 
 export const name = 'Ubåtshallen'
 export const url = 'https://www.ubatshallen.se'
+export const emoji = 'submarine'
 
 /**
  * @returns {Promise<Course[]>}

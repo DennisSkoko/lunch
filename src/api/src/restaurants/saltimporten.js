@@ -2,6 +2,7 @@ import { loadCherrioFromUrl } from '../util.js'
 
 export const name = 'Saltimporten'
 export const url = 'https://www.saltimporten.com'
+export const emoji = 'salt'
 
 /**
  * @returns {Promise<Course[]>}

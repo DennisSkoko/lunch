@@ -2,6 +2,7 @@ import { loadCherrioFromUrl } from '../util.js'
 
 export const name = 'P2'
 export const url = 'https://www.restaurangp2.se'
+export const emoji = 'p2'
 
 /**
  * @returns {Promise<Course[]>}

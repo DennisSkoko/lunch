@@ -3,6 +3,7 @@
 
 export const name = 'Eatery'
 export const url = 'https://eatery.se/anlaggningar/vastra-hamnen'
+export const emoji = 'eatery'
 
 /**
  * @returns {Promise<Course[]>}

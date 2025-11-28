@@ -14,6 +14,7 @@ interface Course {
 interface Restaurant {
   name: string
   url: string
+  emoji?: string
   error?: string
   courses: Course[]
 }

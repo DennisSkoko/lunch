@@ -69,7 +69,7 @@ export class Slack {
       if (restaurant.error) return;
       if (restaurant.courses.length === 0) return
 
-      textParts.push(`<${restaurant.url}|${restaurant.name}>`)
+      textParts.push(`${restaurant.emoji ? `:${restaurant.emoji}: ` : ''}<${restaurant.url}|${restaurant.name}>`)
 
       restaurant.courses.forEach(course => {
         textParts.push(`- ${course.desc}`)

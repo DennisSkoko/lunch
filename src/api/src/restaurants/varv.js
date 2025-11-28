@@ -2,6 +2,7 @@ import { loadJsdomFromUrl } from '../util.js'
 
 export const name = 'Varv'
 export const url = 'https://www.varvmalmo.com/menu'
+export const emoji = 'repeat'
 
 /**
  * @returns {Promise<Course[]>}

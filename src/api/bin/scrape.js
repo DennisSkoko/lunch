@@ -13,6 +13,7 @@ const scrapedRestaurants = await Promise.all(
       return {
         name: restaurant.name,
         url: restaurant.url,
+        emoji: restaurant.emoji,
         error: /** @type {Error} */ (error).message
       }
     }

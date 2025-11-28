@@ -8,7 +8,7 @@ const scrapedRestaurants = await Promise.all(
     try {
       const courses = await retry(async () => await restaurant.scrape())
 
-      return { name: restaurant.name, url: restaurant.url, courses }
+      return { name: restaurant.name, url: restaurant.url, emoji: restaurant.emoji, courses }
     } catch (error) {
       return {
         name: restaurant.name,

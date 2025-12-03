@@ -33,7 +33,7 @@ export class Slack {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `<${restaurant.url}|${restaurant.name}>`
+          text: `${restaurant.emoji ? `:${restaurant.emoji}: ` : ''}<${restaurant.url}|${restaurant.name}>`
         }
       })
 
@@ -84,6 +84,5 @@ export class Slack {
       text: textParts.join('\n'),
       blocks: blocks
     })
-
   }
 }

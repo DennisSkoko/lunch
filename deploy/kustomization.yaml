@@ -4,3 +4,4 @@ resources:
   - namespace.yaml
   - ../src/api/deploy
   - ../src/notifier/deploy
+  - ../src/notifier-email/deploy

@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: notifier-email
+
+spec:
+  schedule: 10 11 * * 1-5
+  timeZone: Europe/Stockholm
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: notifier
+              image: registry.home.dennisskoko.com/lunch/notifier-email:latest
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ['ALL']
+                runAsNonRoot: true
+                runAsUser: 1000
+                runAsGroup: 1000
+                seccompProfile:
+                  type: RuntimeDefault
+              envFrom:
+                - secretRef:
+                    name: notifier-email-secrets 
+              env:
+                - name: LUNCH_STORAGE_FILE
+                  value: /etc/lunch/restaurants.json
+              volumeMounts:
+                - name: storage
+                  mountPath: /etc/lunch
+                  readOnly: true
+          volumes:
+            - name: storage
+              nfs:
+                server: storage.lan
+                path: /mnt/main/services/lunch

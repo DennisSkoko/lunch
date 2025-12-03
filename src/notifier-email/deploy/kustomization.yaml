@@ -1,0 +1,7 @@
+secretGenerator:
+  - name: notifier-email-secrets
+    envs:
+      - .env
+
+resources:
+  - notifier-email.yaml

@@ -1,0 +1,18 @@
+{
+  "name": "lunch-notifier-email",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node -r dotenv/config src/main.js",
+    "lint": "tsc"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.3.1",
+    "mailersend": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "typescript": "^5.2.2"
+  }
+}

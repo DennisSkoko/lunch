@@ -1,7 +1,17 @@
 import { load } from 'cheerio'
 import { JSDOM, VirtualConsole } from 'jsdom'
-import { PDFParse } from "pdf-parse";
 import fetch from 'node-fetch'
+import { DOMMatrix, Path2D, ImageData, Image } from '@napi-rs/canvas'
+
+// Polyfill browser globals for pdfjs
+;/** @type {any} */ (global).DOMMatrix = DOMMatrix
+;/** @type {any} */ (global).Path2D = Path2D
+;/** @type {any} */ (global).ImageData = ImageData
+;/** @type {any} */ (global).Image = Image
+
+// Using dynamic import in order to set the polyfills (above) before pdf-parse is loaded.
+// I used the solution from (modified a bit) https://github.com/mehmet-kozan/pdf-parse/issues/10#issuecomment-3381053495
+const { PDFParse } = await import('pdf-parse')
 
 /**
  * @param {string} url
@@ -87,7 +97,7 @@ export async function readPdfFromUrl(url) {
   if (!response.ok) {
     throw new Error(`Non ok response code (${response.status}) from ${url}`)
   }
-  const parser = new PDFParse({ url: url });
+  const parser = new PDFParse({ url });
   const pdfText = await parser.getText();
   if (!pdfText) throw new Error("Failed to parse PDF");
   return pdfText.text

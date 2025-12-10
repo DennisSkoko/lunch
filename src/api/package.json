@@ -9,6 +9,7 @@
     "lint": "tsc"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.84",
     "@types/jsdom": "^21.1.7",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",

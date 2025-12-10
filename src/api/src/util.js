@@ -1,5 +1,6 @@
 import { load } from 'cheerio'
 import { JSDOM, VirtualConsole } from 'jsdom'
+import { PDFParse } from "pdf-parse";
 import fetch from 'node-fetch'
 
 /**
@@ -75,4 +76,19 @@ export async function wait(ms) {
   return new Promise(resolve => {
     setTimeout(resolve, ms)
   })
+}
+
+/**
+ * @param {string} url
+ * @returns {Promise<string>}
+ */
+export async function readPdfFromUrl(url) {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Non ok response code (${response.status}) from ${url}`)
+  }
+  const parser = new PDFParse({ url: url });
+  const pdfText = await parser.getText();
+  if (!pdfText) throw new Error("Failed to parse PDF");
+  return pdfText.text
 }

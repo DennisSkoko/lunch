@@ -1,5 +1,5 @@
 import * as eatery from './eatery.js'
-import * as hylliebryggeri from './hylliebryggeri.js'
+import * as hylliebryggeri from './hyllieBryggeri.js'
 import * as lokal17 from './lokal17.js'
 import * as miaMaria from './miaMaria.js'
 import * as p2 from './p2.js'

@@ -31,16 +31,7 @@ export async function scrape() {
   const match = pdfText.match(regex);
   if (!match) throw new Error(`Could not find dishes for ${todayName}`);
   
-  const lines = match[0]
-    .split(/\r?\n/)
-    .map(l => l.trim())
-    .filter(Boolean)
-    .filter(l => !l.match(/\d+\s?kr/i)) // remove price lines
-    // Keep only Swedish lines: take every 2nd line starting from first
-    .filter((line, index, arr) => index % 2 === 0);
-  
-  return lines.map(desc => ({
-    diet: "all",
-    desc
-  }));
+  // Take only 2nd line - Swedish course line
+  const line = match[0].split(/\r?\n/)[1];
+  return [{ diet: "all", desc: line }];
 }

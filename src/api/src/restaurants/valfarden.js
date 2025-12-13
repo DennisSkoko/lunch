@@ -2,7 +2,7 @@ import { loadJsdomFromUrl } from '../util.js'
 
 export const name = 'Välfärden'
 export const url = 'https://valfarden.nu/dagens-lunch/'
-export const emoji = 'fork_and_knife'
+export const emoji = 'ring_buoy'
 
 export async function scrape() {
   const dom = await loadJsdomFromUrl(url)

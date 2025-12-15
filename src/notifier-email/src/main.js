@@ -89,6 +89,7 @@ function getEmailText(restaurants) {
 
   restaurants.forEach(restaurant => {
     if (restaurant.error) return;
+    if (!restaurant.courses) return;
     if (restaurant.courses.length === 0) return
 
     textParts.push(`<${restaurant.url}|${restaurant.name}>`)

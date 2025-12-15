@@ -65,6 +65,10 @@ ul {
   parts.push(`<h1>${`Lunchmeny ${format(new Date(), `'v'I EEEE`, { locale: sv })}`}</h1>`)
 
   restaurants.forEach(restaurant => {
+    if (restaurant.error) return;
+    if (!restaurant.courses) return;
+    if (restaurant.courses.length === 0) return
+
     parts.push(`<h3><a href=${restaurant.url}>${restaurant.name}</a></h3>`)
 
     parts.push('<ul>')

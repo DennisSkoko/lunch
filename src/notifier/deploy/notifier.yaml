@@ -6,6 +6,8 @@ metadata:
 spec:
   schedule: 10 11 * * 1-5
   timeZone: Europe/Stockholm
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:

@@ -26,10 +26,14 @@ export async function scrape() {
     .find(element => element.textContent?.trim().toLowerCase() === dayAsText)
   if (!header) throw new Error('Could not find the header for today')
 
-  const firstMenuItem = header?.nextElementSibling
+  let firstMenuItem = header?.nextElementSibling
+
+  // Some headers has an empty line under them.
+  if (firstMenuItem?.textContent?.trim() === '') firstMenuItem = firstMenuItem?.nextElementSibling;
+
   if (!firstMenuItem) throw new Error('Could not find the first menu item element')
 
-  const secondMenuItem = header?.nextElementSibling?.nextElementSibling?.nextElementSibling
+  const secondMenuItem = firstMenuItem.nextElementSibling?.nextElementSibling
   if (!secondMenuItem) throw new Error('Could not find the second menu item element')
 
   return [firstMenuItem, secondMenuItem]

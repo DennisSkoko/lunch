@@ -1,4 +1,3 @@
-import * as eatery from './eatery.js'
 import * as hylliebryggeri from './hyllieBryggeri.js'
 import * as lokal17 from './lokal17.js'
 import * as miaMaria from './miaMaria.js'
@@ -12,7 +11,6 @@ import * as vartKok from './vartKok.js'
 import * as varv from './varv.js'
 
 export const restaurants = [
-  eatery,
   hylliebryggeri,
   lokal17,
   miaMaria,

@@ -1,3 +1,4 @@
+import * as bistroTout from './bistroTout.js'
 import * as hylliebryggeri from './hyllieBryggeri.js'
 import * as lokal17 from './lokal17.js'
 import * as miaMaria from './miaMaria.js'
@@ -6,11 +7,12 @@ import * as saltimporten from './saltimporten.js'
 import * as slagthuset from './slagthuset.js'
 import * as spill from './spill.js'
 import * as ubatshallen from './ubatshallen.js'
-import * as valfarden from './valfarden.js'
-import * as vartKok from './vartKok.js'
+// import * as valfarden from './valfarden.js'
+// import * as vartKok from './vartKok.js'
 import * as varv from './varv.js'
 
 export const restaurants = [
+  bistroTout,
   hylliebryggeri,
   lokal17,
   miaMaria,
@@ -19,7 +21,7 @@ export const restaurants = [
   slagthuset,
   spill,
   ubatshallen,
-  valfarden,
-  vartKok,
+  // valfarden, Tillbaka den 7e augusti
+  // vartKok, Sommarstängt
   varv,
 ]

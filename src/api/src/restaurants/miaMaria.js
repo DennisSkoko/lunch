@@ -11,42 +11,20 @@ export async function scrape() {
   const dom = await loadJsdomFromUrl(url)
   const document = dom.window.document
 
-  /** @type {{ [key: string]: string }} */
-  const dayIndexToText = {
-    '1': 'Måndag',
-    '2': 'Tisdag',
-    '3': 'Onsdag',
-    '4': 'Torsdag',
-    '5': 'Fredag'
-  }
+  const wrapper = [...document.querySelectorAll('[role="tabpanel"]')]
+    .find(el => el.id.includes('lunch-meny'))
+    ?.parentElement
 
-  const dayAsText = dayIndexToText[new Date().getDay()]
+  if (!wrapper) throw new Error('Could not find wrapper')
 
-  const button = [...document.querySelectorAll('button[aria-controls]')]
-    .find(button => button.textContent?.trim() === dayAsText);
-  if (!button) throw new Error('Could not find the menu button')
+  const todaysWrapper = wrapper.children[new Date().getDay() - 1]
+  if (!todaysWrapper) throw new Error('Could not find todays wrapper')
 
-  const menu = document.getElementById(/** @type {string} */ (button.getAttribute('aria-controls')))
-  if (!menu) throw new Error('Could not find the menu that the button pointed to')
+  return new Array(3).fill(null).map((_, i) => {
+    const inner = todaysWrapper.children[i]?.children[2]
 
-  return extractMenuItems(menu).map((menuItem, i) => /** @type {Course} */ ({
-    diet: i === 2 ? 'veg' : 'all',
-    desc: menuItem
-  }))
-}
+    if (!inner) throw new Error('Could not find todays menu')
 
-/**
-  * @param {HTMLElement} element
-  */
-function extractMenuItems(element) {
-  const menuItems = []
-
-  for (const child of element.children) {
-    const menuItemElement = child.children[2]
-    if (!menuItemElement) throw new Error('Could not find menu item element')
-
-    menuItems.push(menuItemElement?.textContent?.trim())
-  }
-
-  return menuItems
+    return { diet: i === 2 ? 'veg' : 'all', desc: /** @type {string} */ (inner.textContent?.trim()) }
+  })
 }

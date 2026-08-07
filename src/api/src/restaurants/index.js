@@ -7,8 +7,8 @@ import * as saltimporten from './saltimporten.js'
 import * as slagthuset from './slagthuset.js'
 import * as spill from './spill.js'
 import * as ubatshallen from './ubatshallen.js'
-// import * as valfarden from './valfarden.js'
-// import * as vartKok from './vartKok.js'
+import * as valfarden from './valfarden.js'
+import * as vartKok from './vartKok.js'
 import * as varv from './varv.js'
 
 export const restaurants = [
@@ -21,7 +21,7 @@ export const restaurants = [
   slagthuset,
   spill,
   ubatshallen,
-  // valfarden, Tillbaka den 7e augusti
-  // vartKok, Sommarstängt
+  valfarden,
+  vartKok,
   varv,
 ]

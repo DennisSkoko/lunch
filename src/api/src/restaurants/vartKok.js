@@ -11,7 +11,7 @@ export async function scrape() {
   const dom = await loadJsdomFromUrl(url)
   const document = dom.window.document
 
-  const wrapper = document.querySelectorAll('[data-testid="richTextElement"]')[5]
+  const wrapper = document.querySelectorAll('[data-testid="richTextElement"]')[6]
 
   if (!wrapper?.textContent) {
     throw new Error('Failed to find richTextElement from Vårt Kök')

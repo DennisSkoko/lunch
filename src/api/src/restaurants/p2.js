@@ -21,8 +21,12 @@ export async function scrape() {
 
   const dayAsText = dayIndexToText[new Date().getDay()]
 
-  return $(`.${dayAsText} .lunch_desc`)
-    .map((_i, el) => $(el).text().trim())
+  // Every course is labeled, the vegetarian one is called "GREEN"
+  return $(`.${dayAsText} .lunchmeny_container`)
+    .map((_i, el) => /** @type {Course} */ ({
+      diet: $(el).find('.lunch_title').text().trim().toUpperCase() === 'GREEN' ? 'veg' : 'all',
+      desc: $(el).find('.lunch_desc').text().trim()
+    }))
     .get()
-    .map((desc, i) => ({ diet: i === 0 ? 'veg' : 'all', desc }))
+    .filter(course => course.desc)
 }

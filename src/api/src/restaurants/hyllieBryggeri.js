@@ -33,9 +33,13 @@ export async function scrape() {
   const dayAsText = /** @type {string} */ (dayIndexToText[new Date().getDay()])
   const todaysMenu = data[dayAsText]
 
-  return [
+  /** @type {Course[]} */
+  const courses = [
     { diet: 'all', desc: todaysMenu },
-    { diet: 'veg', desc: data.vegetarian }
+    { diet: 'veg', desc: data.vegetarian },
+    { diet: 'all', desc: data.fish }
   ]
+
+  return courses.filter(course => course.desc)
 }
 

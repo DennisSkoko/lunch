@@ -36,6 +36,16 @@ export async function scrape() {
   const vegMatch = pdfText.match(/Vegetarisk\/Vegetarian[\s\S]*/i);
   if (vegMatch) courses.push({ diet: "veg", desc: readSwedishDish(vegMatch[0]) });
 
+  // Dishes that are always on the lunch menu, each one is a Swedish line, an English line and a price
+  const alwaysMatch = pdfText.match(/Always on the menu([\s\S]*?)Något Sött/i);
+  if (alwaysMatch) {
+    const groups = /** @type {string} */ (alwaysMatch[1]).split(/^\s*\d+\s?kr\s*$/im);
+    for (const group of groups) {
+      const desc = group.split(/\r?\n/).map(l => l.trim()).find(Boolean);
+      if (desc) courses.push({ diet: "all", desc });
+    }
+  }
+
   return courses;
 }
 

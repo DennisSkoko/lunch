@@ -20,11 +20,28 @@ export async function scrape() {
   const todaysWrapper = wrapper.children[new Date().getDay() - 1]
   if (!todaysWrapper) throw new Error('Could not find todays wrapper')
 
-  return new Array(3).fill(null).map((_, i) => {
-    const inner = todaysWrapper.children[i]?.children[2]
+  /** @type {Course[]} */
+  const courses = []
+  let label = ''
 
-    if (!inner) throw new Error('Could not find todays menu')
+  // Each course is a container with a label, an empty spacer, the dish and the price. Some days
+  // the label is a separate heading before the container, and some days have extra courses
+  // like "Torsdagens soppa"
+  for (const child of todaysWrapper.children) {
+    const parts = [...child.children].map(el => el.textContent?.trim() ?? '')
 
-    return { diet: i === 2 ? 'veg' : 'all', desc: /** @type {string} */ (inner.textContent?.trim()) }
-  })
+    if (!child.classList.contains('e-con')) {
+      label = /** @type {string} */ (child.textContent?.trim())
+      continue
+    }
+
+    if (parts.length > 3) label = /** @type {string} */ (parts[0])
+
+    const desc = parts[parts.length - 2]
+    if (desc) courses.push({ diet: /vegetari/i.test(label) ? 'veg' : 'all', desc })
+  }
+
+  if (courses.length === 0) throw new Error('Could not find todays menu')
+
+  return courses
 }

@@ -41,10 +41,27 @@ export async function scrape() {
 
   if (!dish) throw new Error(`Could not find menu for ${todayText}`)
 
-  return [
-    {
-      diet: 'all', // you can adjust if you detect veg somehow
-      desc: dish
+  /** @type {Course[]} */
+  const courses = [{ diet: 'all', desc: dish }]
+
+  // Fish and vegetarian courses are listed per day range, e.g. "Fisk måndag-onsdag"
+  const dayNames = Object.values(dayIndexToText).map(day => day.toLowerCase())
+  const todayPosition = dayNames.indexOf(todayText.toLowerCase())
+
+  for (const paragraph of document.querySelectorAll('.wp-content p')) {
+    const label = paragraph.querySelector('strong')?.textContent?.trim().toLowerCase()
+    const description = paragraph.querySelector('em')?.textContent?.trim()
+    const match = label?.match(/^(fisk|vegetariskt)\s+(\p{L}+)\s*-\s*(\p{L}+)/u)
+
+    if (!match || !description) continue
+
+    const start = dayNames.indexOf(/** @type {string} */ (match[2]))
+    const end = dayNames.indexOf(/** @type {string} */ (match[3]))
+
+    if (start <= todayPosition && todayPosition <= end) {
+      courses.push({ diet: match[1] === 'vegetariskt' ? 'veg' : 'all', desc: description })
     }
-  ]
+  }
+
+  return courses
 }

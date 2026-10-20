@@ -25,7 +25,10 @@ export async function scrape() {
         .map(part => part.split('').filter(c => c.charCodeAt(0) !== 8203).join('').trim())
         .filter(part => part !== '')
     )
-    .map(part => /** @type {Course} */ ({ diet: 'veg', desc: part.join(' ') }))
+    // Skip the "half portion of two dishes" option, it isn't a course of its own
+    .filter(part => !part[0]?.toUpperCase().startsWith('KOMBINATION'))
+    .map(part => part.join(' '))
+    .map(desc => /** @type {Course} */ ({ diet: /vegetarisk|vego|vegan/i.test(desc) ? 'veg' : 'all', desc }))
 }
 
 /**
@@ -42,8 +45,6 @@ function getMenuParts(text) {
       menu.push(parts.join('\n'))
       parts = []
     }
-
-    if (menu.length >= 2) break;
   }
 
   return menu

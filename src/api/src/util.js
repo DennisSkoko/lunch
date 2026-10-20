@@ -102,3 +102,14 @@ export async function readPdfFromUrl(url) {
   if (!pdfText) throw new Error("Failed to parse PDF");
   return pdfText.text
 }
+
+/**
+ * @param {Date} date
+ * @returns {number} The ISO 8601 week number
+ */
+export function getIsoWeek(date) {
+  const thursday = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  thursday.setUTCDate(thursday.getUTCDate() + 4 - (thursday.getUTCDay() || 7))
+  const yearStart = new Date(Date.UTC(thursday.getUTCFullYear(), 0, 1))
+  return Math.ceil(((thursday.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
+}

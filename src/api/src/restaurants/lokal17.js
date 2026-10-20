@@ -31,7 +31,23 @@ export async function scrape() {
   const match = pdfText.match(regex);
   if (!match) throw new Error(`Could not find dishes for ${todayName}`);
   
-  // Take only 2nd line - Swedish course line
-  const line = match[0].split(/\r?\n/)[1];
-  return [{ diet: "all", desc: line }];
+  const courses = [{ diet: "all", desc: readSwedishDish(match[0]) }];
+
+  const vegMatch = pdfText.match(/Vegetarisk\/Vegetarian[\s\S]*/i);
+  if (vegMatch) courses.push({ diet: "veg", desc: readSwedishDish(vegMatch[0]) });
+
+  return courses;
+}
+
+/**
+ * The line after the header is the Swedish dish, it continues on the next line when it ends with "-"
+ * @param {string} section
+ */
+function readSwedishDish(section) {
+  const lines = section.split(/\r?\n/).slice(1);
+  let dish = lines.shift()?.trim() ?? "";
+  while (dish.endsWith("-") && lines.length) dish += lines.shift()?.trim();
+
+  // The PDF text extraction turns the "f" of the "fi" ligature into ";"
+  return dish.replace(/;(?=\p{L})/gu, "f");
 }

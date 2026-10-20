@@ -22,14 +22,18 @@ export async function scrape() {
   const dayAsNumber = new Date().getDay()
   const dayAsText = /** @type {string} */ (dayIndexToText[dayAsNumber])
 
-  const veg = $('[title="Page 1"] p:last-child').text().replace('VEGETARISKT Mån-Ons:', '')
-  /** @type {string | undefined} */
-  let weeklyVegDesc = undefined
+  const veg = $('[title="Page 1"] p')
+    .filter((_i, el) => $(el).text().includes('VEGETARISKT'))
+    .first()
+    .text()
+    .replace('VEGETARISKT', '')
+    .replace(/Mån[\s-]*(Ons|Fre)\s*:/i, '')
 
-  if (veg.includes('Tors Fre:') || veg.includes('Tors-Fre:')) {
-    const parts = veg.split('Tors Fre:').flatMap(parts => parts.split('Tors-Fre:'))
-    weeklyVegDesc = dayAsNumber <= 3 ? parts[0] : parts[1]
-  }
+  // The vegetarian course is either for the whole week or split into Mån-Ons and Tors-Fre
+  const vegParts = veg.split(/Tors[\s-]*Fre\s*:/i)
+  const weeklyVegDesc = vegParts.length > 1 && dayAsNumber > 3 ? vegParts[1] : vegParts[0]
+
+  if (!weeklyVegDesc?.trim()) throw new Error('Could not find the vegetarian course')
 
   return [
     {
@@ -42,7 +46,7 @@ export async function scrape() {
     },
     {
       diet: 'veg',
-      desc: /** @type {string} */ (weeklyVegDesc).trim()
+      desc: weeklyVegDesc.trim()
     }
   ]
 }

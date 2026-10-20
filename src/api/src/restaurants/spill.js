@@ -15,6 +15,9 @@ export async function scrape() {
     .find('div:nth-child(3) #client .space-y-4 > div')
     .map((_i, el) => $(el).text())
     .get()
-    .map(course => course.replace(/[\n]+.*/, '').replace('Vegetarisk:', '').trim())
-    .map((desc, i) => ({ diet: i === 1 ? 'veg' : 'all', desc }))
+    .map(course => course.replace(/[\n]+.*/, '').trim())
+    .map(course => /** @type {Course} */ ({
+      diet: course.startsWith('Vegetarisk:') ? 'veg' : 'all',
+      desc: course.replace('Vegetarisk:', '').trim()
+    }))
 }

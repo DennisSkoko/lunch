@@ -3,6 +3,8 @@ import { format } from 'date-fns'
 import { sv } from 'date-fns/locale';
 import * as storage from './storage.js'
 
+const VEG_TAG = '🌱'
+
 const restaurants = await storage.read()
 
 if (!restaurants.length) {
@@ -74,7 +76,7 @@ ul {
     parts.push('<ul>')
 
     restaurant.courses.forEach(course => {
-      parts.push(`<li>${course.desc}</li>`)
+      parts.push(`<li>${courseText(course)}</li>`)
     })
 
     parts.push('</ul>')
@@ -99,11 +101,18 @@ function getEmailText(restaurants) {
     textParts.push(`<${restaurant.url}|${restaurant.name}>`)
 
     restaurant.courses.forEach(course => {
-      textParts.push(`- ${course.desc}`)
+      textParts.push(`- ${courseText(course)}`)
     })
 
     textParts.push('\n')
   })
 
   return textParts.join('\n')
+}
+
+/**
+ * @param {Course} course
+ */
+function courseText(course) {
+  return course.diet === 'veg' ? `${course.desc} ${VEG_TAG}` : course.desc
 }

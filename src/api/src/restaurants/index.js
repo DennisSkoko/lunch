@@ -1,4 +1,5 @@
 import * as bistroTout from './bistroTout.js'
+import * as glasklart from './glasklart.js'
 import * as hylliebryggeri from './hyllieBryggeri.js'
 import * as lokal17 from './lokal17.js'
 import * as miaMaria from './miaMaria.js'
@@ -13,6 +14,7 @@ import * as varv from './varv.js'
 
 export const restaurants = [
   bistroTout,
+  glasklart,
   hylliebryggeri,
   lokal17,
   miaMaria,

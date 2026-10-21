@@ -4,6 +4,10 @@ export const name = 'Ubåtshallen'
 export const url = 'https://www.ubatshallen.se'
 export const emoji = 'submarine'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

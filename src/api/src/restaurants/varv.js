@@ -4,6 +4,10 @@ export const name = 'Varv'
 export const url = 'https://www.varvmalmo.com/menu'
 export const emoji = 'repeat'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

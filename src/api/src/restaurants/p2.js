@@ -4,6 +4,10 @@ export const name = 'P2'
 export const url = 'https://www.restaurangp2.se'
 export const emoji = 'p2'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

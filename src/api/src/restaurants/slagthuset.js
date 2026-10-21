@@ -4,6 +4,10 @@ export const name = 'Slagthuset Restaurangen'
 export const url = 'https://www.slagthuset.se/restaurangen'
 export const emoji = 'lipstick-on-a-pig'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

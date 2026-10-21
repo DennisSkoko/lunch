@@ -4,6 +4,10 @@ export const name = 'Bistro Tout'
 export const url = 'https://bistrotout.se'
 export const emoji = 'baguette_bread'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

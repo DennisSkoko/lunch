@@ -3,21 +3,23 @@ import { restaurants } from '../src/restaurants/index.js'
 import * as storage from '../src/storage.js'
 import { retry } from '../src/util.js'
 
-const scrapedRestaurants = await Promise.all(
-  restaurants.map(async restaurant => {
-    try {
-      const courses = await retry(async () => await restaurant.scrape())
+let scrapedRestaurants = await Promise.all(
+  restaurants
+    .filter(restaurant => restaurant.hasMenuToday())
+    .map(async restaurant => {
+      try {
+        const courses = await retry(async () => await restaurant.scrape())
 
-      return { name: restaurant.name, url: restaurant.url, emoji: restaurant.emoji, courses }
-    } catch (error) {
-      return {
-        name: restaurant.name,
-        url: restaurant.url,
-        emoji: restaurant.emoji,
-        error: /** @type {Error} */ (error).message
+        return { name: restaurant.name, url: restaurant.url, emoji: restaurant.emoji, courses }
+      } catch (error) {
+        return {
+          name: restaurant.name,
+          url: restaurant.url,
+          emoji: restaurant.emoji,
+          error: /** @type {Error} */ (error).message
+        }
       }
-    }
-  })
+    })
 )
 
 const failedRestaurants = scrapedRestaurants.filter(

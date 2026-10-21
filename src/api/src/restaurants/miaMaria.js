@@ -4,6 +4,10 @@ export const name = 'Mia Maria'
 export const url = 'https://miamarias.nu/lunch/'
 export const emoji = 'mia'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

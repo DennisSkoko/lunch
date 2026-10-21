@@ -4,6 +4,10 @@ export const name = 'Välfärden'
 export const url = 'https://valfarden.nu/dagens-lunch/'
 export const emoji = 'ring_buoy'
 
+export function hasMenuToday() {
+  return true
+}
+
 export async function scrape() {
   const dom = await loadJsdomFromUrl(url)
   const document = dom.window.document

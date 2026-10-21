@@ -4,6 +4,10 @@ export const name = 'Saltimporten'
 export const url = 'https://www.saltimporten.com'
 export const emoji = 'salt'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

@@ -4,6 +4,10 @@ export const name = 'Spill'
 export const url = 'https://restaurangspill.se/'
 export const emoji = 'pouring_liquid'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

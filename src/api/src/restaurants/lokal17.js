@@ -6,6 +6,10 @@ export const name = "Lokal17";
 export const url = "https://lokal17.se/";
 export const emoji = "fork_and_knife";
 
+export function hasMenuToday() {
+  return true
+}
+
 export async function scrape() {
   // 1. Fetch homepage
   const resp = await fetch(url);

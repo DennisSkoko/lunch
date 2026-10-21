@@ -4,6 +4,10 @@ export const name = 'Vårt kök (Frankful)'
 export const url = 'https://www.vartkok.com/meny'
 export const emoji = 'tele2_frank'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

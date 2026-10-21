@@ -4,6 +4,10 @@ export const name = 'Hyllie Bryggeri'
 export const url = 'https://hylliebryggeri.se/stormgatan'
 export const emoji = 'beer'
 
+export function hasMenuToday() {
+  return true
+}
+
 /**
  * @returns {Promise<Course[]>}
  */

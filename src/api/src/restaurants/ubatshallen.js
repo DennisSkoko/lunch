@@ -1,4 +1,4 @@
-import { loadJsdomFromUrl } from '../util.js'
+import { getIsoWeek, loadJsdomFromUrl } from '../util.js'
 
 export const name = 'Ubåtshallen'
 export const url = 'https://www.ubatshallen.se'
@@ -12,7 +12,8 @@ export function hasMenuToday() {
  * @returns {Promise<Course[]>}
  */
 export async function scrape() {
-  const dom = await loadJsdomFromUrl(url)
+  // The site sits behind a Varnish cache that can serve a copy that is days old, the query string bypasses it
+  const dom = await loadJsdomFromUrl(`${url}/?_=${Date.now()}`)
   const document = dom.window.document
 
   /** @type {{ [key: string]: string }} */
@@ -28,6 +29,10 @@ export async function scrape() {
 
   const content = document.querySelector('.entry-content')
   if (!content) throw new Error('Could not find the menu element')
+
+  // Every week uses the same day headers, so make sure we don't read last week's menu
+  const week = content.textContent?.match(/Vecka (\d+)/)?.[1]
+  if (Number(week) !== getIsoWeek(new Date())) throw new Error(`The menu is for week ${week}, not the current week`)
 
   // The day headers are sometimes at the end of the previous paragraph, so read the menu line by line
   content.innerHTML = content.innerHTML.replace(/<br\s*\/?>|<\/p>/g, '\n')

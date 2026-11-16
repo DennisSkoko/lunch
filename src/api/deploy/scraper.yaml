@@ -4,7 +4,7 @@ metadata:
   name: scraper
 
 spec:
-  schedule: 0 11 * * 1-5
+  schedule: 15 11 * * 1-5
   timeZone: Europe/Stockholm
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1

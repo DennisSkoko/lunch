@@ -7,7 +7,7 @@ export const emoji = 'cocktail'
 export function hasMenuToday() {
   const date = new Date()
 
-  return date.getDay() !== 5 && date.toLocaleDateString('sv') !== '2026-10-22'
+  return date.getDay() !== 5 && date.toLocaleDateString('sv') < '2027-01-11'
 }
 
 /**
